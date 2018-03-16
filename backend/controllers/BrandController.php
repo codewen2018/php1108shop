@@ -162,6 +162,7 @@ class BrandController extends \yii\web\Controller
     /**
      * 品牌删除
      * @param $id 品牌Id
+     * 
      */
     public function actionDel($id){
 
