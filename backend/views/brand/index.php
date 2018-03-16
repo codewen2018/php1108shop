@@ -22,7 +22,19 @@
     <tr>
         <td><?=$brand->id?></td>
         <td><?=$brand->name?></td>
-        <td><?=$brand->logo?></td>
+        <td><?php
+            $imgPath=strpos($brand->logo,"http://")===false?"/".$brand->logo:$brand->logo;
+            echo \yii\bootstrap\Html::img($imgPath,['height'=>40]);
+            //判断是七牛云还是本地 本地加"/"
+         /*   if (strpos($brand->logo,"ttp://")){
+                echo \yii\bootstrap\Html::img($brand->logo);
+            }else{
+                echo \yii\bootstrap\Html::img("/".$brand->logo);
+            }*/
+
+
+            ?></td>
+      <!--  <td><?/*=\yii\bootstrap\Html::img(strpos($brand->logo,"ttp://")?$brand->logo:"/".$brand->logo,['height'=>40]);*/?></td>-->
         <td><?=$brand->sort?></td>
         <td><?=$brand->status?></td>
         <td><?=$brand->intro?></td>

@@ -12,7 +12,7 @@ use yii\bootstrap\ActiveForm;
     <?php $form = ActiveForm::begin(); ?>
 
         <?= $form->field($model, 'name') ?>
-        <?= $form->field($model, 'img')->fileInput() ?>
+        <?= $form->field($model, 'logo')->widget(\manks\FileInput::className(),[]) ?>
         <?= $form->field($model, 'sort') ?>
         <?= $form->field($model, 'status')->inline()->radioList(["禁用",'激活'],['value'=>1])?>
         <?= $form->field($model, 'intro')->textarea() ?>

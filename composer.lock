@@ -4,8 +4,42 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "630d5f1d19e73b0163f900453171fba5",
+    "content-hash": "f2d679dab960e45f0ddcf7cd9c0b387a",
     "packages": [
+        {
+            "name": "bailangzhan/yii2-webuploader",
+            "version": "1.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/bailangzhan/yii2-webuploader.git",
+                "reference": "dcc6c5ed20f6b15ee46365d0b52167d96f69c566"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://files.phpcomposer.com/files/bailangzhan/yii2-webuploader/dcc6c5ed20f6b15ee46365d0b52167d96f69c566.zip",
+                "reference": "dcc6c5ed20f6b15ee46365d0b52167d96f69c566",
+                "shasum": ""
+            },
+            "require": {
+                "yiisoft/yii2": ">=2.0.4"
+            },
+            "type": "yii2-extension",
+            "autoload": {
+                "psr-4": {
+                    "manks\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "yii2-webuploader组件",
+            "keywords": [
+                "webuploader",
+                "yii2"
+            ],
+            "time": "2017-08-17T06:22:57+00:00"
+        },
         {
             "name": "bower-asset/bootstrap",
             "version": "v3.3.7",
@@ -166,6 +200,47 @@
                 "markdown-extra"
             ],
             "time": "2017-07-16T21:13:23+00:00"
+        },
+        {
+            "name": "crazyfd/yii2-qiniu",
+            "version": "1.03",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/crazyfd/upload.git",
+                "reference": "0150d40264ba6e31928615a248524cda9e5c3ad0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://files.phpcomposer.com/files/crazyfd/upload/0150d40264ba6e31928615a248524cda9e5c3ad0.zip",
+                "reference": "0150d40264ba6e31928615a248524cda9e5c3ad0",
+                "shasum": ""
+            },
+            "require": {
+                "yiisoft/yii2": "*"
+            },
+            "type": "yii2-extension",
+            "autoload": {
+                "psr-4": {
+                    "crazyfd\\qiniu\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "crazyfd",
+                    "email": "crazyfd@qq.com"
+                }
+            ],
+            "description": "yii2上传到七牛云存储",
+            "keywords": [
+                "qiniu",
+                "upload",
+                "yii"
+            ],
+            "time": "2018-01-03T03:28:03+00:00"
         },
         {
             "name": "doctrine/lexer",
