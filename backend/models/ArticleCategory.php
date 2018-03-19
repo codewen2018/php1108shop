@@ -24,7 +24,9 @@ class ArticleCategory extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['name'], 'required'],
+            [['name','sort','status','is_help'], 'required'],
+            [['name'],'unique'],//设置唯一
+            [['intro'],'safe']
         ];
     }
 

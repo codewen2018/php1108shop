@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "f2d679dab960e45f0ddcf7cd9c0b387a",
+    "content-hash": "962bc3691df67abd73bccc675344ce40",
     "packages": [
         {
             "name": "bailangzhan/yii2-webuploader",
@@ -243,6 +243,46 @@
             "time": "2018-01-03T03:28:03+00:00"
         },
         {
+            "name": "creocoder/yii2-nested-sets",
+            "version": "0.9.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/creocoder/yii2-nested-sets.git",
+                "reference": "cb8635a459b6246e5a144f096b992dcc30cf9954"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://files.phpcomposer.com/files/creocoder/yii2-nested-sets/cb8635a459b6246e5a144f096b992dcc30cf9954.zip",
+                "reference": "cb8635a459b6246e5a144f096b992dcc30cf9954",
+                "shasum": ""
+            },
+            "require": {
+                "yiisoft/yii2": "*"
+            },
+            "type": "yii2-extension",
+            "autoload": {
+                "psr-4": {
+                    "creocoder\\nestedsets\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Alexander Kochetov",
+                    "email": "creocoder@gmail.com"
+                }
+            ],
+            "description": "The nested sets behavior for the Yii framework",
+            "keywords": [
+                "nested sets",
+                "yii2"
+            ],
+            "time": "2015-01-27T10:53:51+00:00"
+        },
+        {
             "name": "doctrine/lexer",
             "version": "v1.0.1",
             "source": {
@@ -399,6 +439,83 @@
                 "html"
             ],
             "time": "2018-02-23T01:58:20+00:00"
+        },
+        {
+            "name": "kucha/ueditor",
+            "version": "1.21",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/BigKuCha/yii2-ueditor-widget.git",
+                "reference": "59e4ab2533bec1b182ce38241a1567e78d57a509"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://files.phpcomposer.com/files/BigKuCha/yii2-ueditor-widget/59e4ab2533bec1b182ce38241a1567e78d57a509.zip",
+                "reference": "59e4ab2533bec1b182ce38241a1567e78d57a509",
+                "shasum": ""
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "kucha\\ueditor\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "BigKuCha",
+                    "email": "nevermore1989@vip.qq.com"
+                }
+            ],
+            "description": "desc",
+            "time": "2017-01-15T06:29:37+00:00"
+        },
+        {
+            "name": "liyuze/yii2-ztree",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/liyuze/yii2-ztree.git",
+                "reference": "cc025f61d6d51071f38f5d9814f6f301566aebb7"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://files.phpcomposer.com/files/liyuze/yii2-ztree/cc025f61d6d51071f38f5d9814f6f301566aebb7.zip",
+                "reference": "cc025f61d6d51071f38f5d9814f6f301566aebb7",
+                "shasum": ""
+            },
+            "require": {
+                "yiisoft/yii2": "*"
+            },
+            "type": "yii2-extension",
+            "autoload": {
+                "psr-4": {
+                    "liyuze\\ztree\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "li yuze",
+                    "email": "290315384@qq.com"
+                }
+            ],
+            "description": "The zTree extension for the Yii framework 2.0",
+            "homepage": "https://github.com/liyuze/yii2-ztree",
+            "keywords": [
+                "extension",
+                "tree",
+                "widget",
+                "yii2",
+                "ztree"
+            ],
+            "time": "2016-02-20T11:18:50+00:00"
         },
         {
             "name": "swiftmailer/swiftmailer",
