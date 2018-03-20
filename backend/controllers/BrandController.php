@@ -243,7 +243,7 @@ class BrandController extends \yii\web\Controller
         $zone = 'south_china';//区域
         //创建七牛云对象
         $qiniu = new Qiniu($ak, $sk,$domain, $bucket,$zone);
-        $key = time();
+        $key = uniqid();//防止同一秒上传多张图片
         //拼路径  123541235132.gif
         $key =$key. strtolower(strrchr($_FILES['file']['name'], '.'));
 
