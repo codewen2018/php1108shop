@@ -21,23 +21,7 @@
         <?= dmstr\widgets\Menu::widget(
             [
                 'options' => ['class' => 'sidebar-menu tree', 'data-widget'=> 'tree'],
-                'items' => [
-                    ['label' => '我们的爱', 'options' => ['class' => 'header']],
-
-                    [
-                        'label' => '商品管理',
-                        'icon' => 'car',
-                        'url' => '#',
-                        'items' => [
-                            ['label' => '商品列表', 'icon' => 'file-code-o', 'url' => ['/goods/index'],],
-                            ['label' => '添加商品', 'icon' => 'dashboard', 'url' => ['/goods/add'],],
-                        ],
-                    ],
-                    ['label' => 'Gii', 'icon' => 'file-code-o', 'url' => ['/gii']],
-                    ['label' => 'Debug', 'icon' => 'dashboard', 'url' => ['/debug']],
-                    ['label' => 'Login', 'url' => ['site/login'], 'visible' => Yii::$app->user->isGuest],
-
-                ],
+                'items' => \backend\models\Mulu::menu()
             ]
         ) ?>
 

@@ -8,7 +8,7 @@
 
 <p>
 
-    <?= \yii\bootstrap\Html::a('添加', ['add'], ['class' => 'btn btn-info pull-left']) ?>
+    <?=\yii\bootstrap\Html::a('添加', ['add'], ['class' => 'btn btn-info pull-left']) ?>
 <form class="form-inline pull-right">
     <select class="form-control" name="status">
         <option>请选择</option>
