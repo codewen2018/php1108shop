@@ -9,6 +9,7 @@ use yii\helpers\Json;
 class UserController extends \yii\web\Controller
 {
 
+    public $enableCsrfValidation=false;
     public function actions()
     {
         return [
@@ -100,6 +101,69 @@ class UserController extends \yii\web\Controller
 
     }
 
+    /**
+     * 用户登录
+     */
+    public function actionLogin()
+    {
+
+        //Post提交
+        $request=\Yii::$app->request;
+        if ($request->isPost){
+            //创建一个新的模型对象
+            $model=new User();
+
+            //设置场景
+            $model->setScenario(User::SCENARIO_LOGIN);
+
+            //绑定数据
+
+            $model->load($request->post());
+
+            //后台验证
+            if ($model->validate()){
+                //找出用户
+                $user=User::findOne(['username'=>$model->username]);
+                if ($user && \Yii::$app->security->validatePassword($model->password,$user->password_hash)){
+                          //登录成功
+                    \Yii::$app->user->login($user,$model->rememberMe?3600*24*7:0);
+                    $result= [
+                        'status'=>1,
+                        'msg'=>'登录成功',
+                        'data'=>null
+                    ];
+                    return Json::encode($result);
+
+                }else{
+                    //用户名或密码错误
+                   // $model->addError("username","用户名不存在")
+                    //验证失败
+                    $result= [
+                        'status'=>0,
+                        'msg'=>'用户名或密码错误',
+                        'data'=>$model->errors
+                    ];
+                    return Json::encode($result);
+                }
+
+            }else{
+
+                //验证失败
+               $result= [
+                    'status'=>0,
+                    'msg'=>'输入有误',
+                    'data'=>$model->errors
+                ];
+               return Json::encode($result);
+            }
+
+
+
+
+        }
+        return $this->render('login');
+    }
+
     public function actionSendSms($mobile)
     {
         //1. 生成验证码 13899998888=>111111
@@ -120,7 +184,7 @@ class UserController extends \yii\web\Controller
             //3. 把code保存到Session中  把手机号当键名 验证码当值
             $session=\Yii::$app->session;
 
-            //$session->set("tel_13899998888","111111");
+            //$session->set("tel_18584563931","163940");
             $session->set("tel_".$mobile,$code);
 
             //4.测试
