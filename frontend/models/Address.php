@@ -19,13 +19,6 @@ use Yii;
  */
 class Address extends \yii\db\ActiveRecord
 {
-    /**
-     * @inheritdoc
-     */
-    public static function tableName()
-    {
-        return 'address';
-    }
 
     /**
      * @inheritdoc
@@ -33,9 +26,8 @@ class Address extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['user_id', 'status'], 'integer'],
-            [['name', 'province', 'city', 'county', 'mobile'], 'string', 'max' => 20],
-            [['address'], 'string', 'max' => 255],
+            [['name','province','city','county','address','mobile'], 'required'],
+            [['status'],'safe']
         ];
     }
 

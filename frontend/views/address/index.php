@@ -14,6 +14,7 @@
 	<script type="text/javascript" src="/js/jquery-1.8.3.min.js"></script>
 	<script type="text/javascript" src="/js/header.js"></script>
 	<script type="text/javascript" src="/js/home.js"></script>
+	<script type="text/javascript" src="/layer/layer.js"></script>
 	<script type="text/javascript" src="/js/PCASClass.js"></script>
 </head>
 <body>
@@ -49,7 +50,13 @@
 				<div class="search_form">
 					<div class="form_left fl"></div>
 					<form action="" name="serarch" method="get" class="fl">
-						<input type="text" class="txt" value="请输入商品关键字" /><input type="submit" class="btn" value="搜索" />
+
+
+
+
+
+
+                        <input type="text" class="txt" value="请输入商品关键字" /><input type="submit" class="btn" value="搜索" />
 					</form>
 					<div class="form_right fl"></div>
 				</div>
@@ -465,54 +472,49 @@
 		<div class="content fl ml10">
 			<div class="address_hd">
 				<h3>收货地址薄</h3>
-				<dl>
-					<dt>1.许坤 北京市 昌平区 仙人跳区 仙人跳大街 17002810530 </dt>
-					<dd>
-						<a href="">修改</a>
-						<a href="">删除</a>
-						<a href="">设为默认地址</a>
-					</dd>
-				</dl>
-				<dl class="last"> <!-- 最后一个dl 加类last -->
-					<dt>2.许坤 四川省 成都市 高新区 仙人跳大街 17002810530 </dt>
-					<dd>
-						<a href="">修改</a>
-						<a href="">删除</a>
-						<a href="">设为默认地址</a>
-					</dd>
-				</dl>
 
+				<?php foreach ($addresss as $key=>$address):?>
+				<dl class="<?=$key==count($addresss)-1?"last":""?>"> <!--  最后一个dl 加类last -->
+					<dt><?=$address->name?> <?=$address->province?> <?=$address->city?> <?=$address->county?> <?=$address->address?> <?=$address->mobile?> </dt>
+					<dd>
+						<a href="">修改</a>
+						<a href="javascript:void(0)" class="del" data-id="<?=$address->id?>">删除</a>
+						<a href="">设为默认地址</a>
+					</dd>
+				</dl>
+<?php endforeach;?>
 			</div>
 
 			<div class="address_bd mt10">
 				<h4>新增收货地址</h4>
-				<form action="" name="address_form">
+				<form action="" name="address_form" id="add_form">
+                    <input type="hidden" name="_csrf-frontend" value="<?=Yii::$app->request->csrfToken?>">
 						<ul>
 							<li>
 								<label for=""><span>*</span>收 货 人：</label>
-								<input type="text" name="" class="txt" />
+								<input type="text" name="Address[name]" class="txt" />
 							</li>
 							<li>
 								<label for=""><span>*</span>所在地区：</label>
-                                <select name="province"></select>
-                                <select name="city"></select>
-                                <select name="area"></select>
+                                <select name="Address[province]"></select>
+                                <select name="Address[city]"></select>
+                                <select name="Address[county]"></select>
 							</li>
 							<li>
 								<label for=""><span>*</span>详细地址：</label>
-								<input type="text" name="" class="txt address"  />
+								<input type="text" name="Address[address]" class="txt address"  />
 							</li>
 							<li>
 								<label for=""><span>*</span>手机号码：</label>
-								<input type="text" name="" class="txt" />
+								<input type="text" name="Address[mobile]" class="txt" />
 							</li>
 							<li>
 								<label for="">&nbsp;</label>
-								<input type="checkbox" name="" class="check" />设为默认地址
+								<input type="checkbox" name="Address[status]" class="check" />设为默认地址
 							</li>
 							<li>
 								<label for="">&nbsp;</label>
-								<input type="submit" name="" class="btn" value="保存" />
+								<input type="button" name="" class="btn" value="保存" id="add_btn"/>
 							</li>
 						</ul>
 					</form>
@@ -617,7 +619,41 @@
 	<!-- 底部版权 end -->
 		<script>
 
-            new PCAS("province","city","area");
+            new PCAS("Address[province]","Address[city]","Address[county]");
+
+            //添加地址
+          $(function () {
+
+              //添加地址
+              $("#add_btn").click(function () {
+                  //提交数据
+                  $.post('/address/add',$("#add_form").serialize(),function (data) {
+                      console.dir(data);
+                  },'json');
+
+
+              });
+
+
+              //删除地址
+              $(".del").click(function () {
+
+                  var del=$(this);//删除对象本身
+                  var id=del.attr('data-id')
+                  $.getJSON("/address/del?id="+id,function (data) {
+                        if (data.status){
+                            //成功
+                            layer.msg(data.msg);
+
+                            //把当前对象的爷爷删除
+                            del.parent().parent().remove();
+
+
+                        }
+                  });
+                 // console.log(this);
+              });
+          });
 
 		</script>
 </body>
