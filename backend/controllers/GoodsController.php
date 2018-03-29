@@ -27,7 +27,11 @@ class GoodsController extends \yii\web\Controller
         return [
             'upload' => [
                 'class' => 'kucha\ueditor\UEditorAction',
-            ]
+                'config' => [
+                    "imageUrlPrefix" => "http://admin.shop.com",//图片访问路径前缀
+
+
+                ]]
         ];
     }
 
@@ -36,34 +40,33 @@ class GoodsController extends \yii\web\Controller
         //得到所有数据 分页
         // 创建一个 DB 查询来获得所有 status 为 1 的文章
         $query = Goods::find();
-        $minPrice=\Yii::$app->request->get('minPrice');
-        $maxPrice=\Yii::$app->request->get('maxPrice');
-        $keyword=\Yii::$app->request->get('keyword');
-        $status=\Yii::$app->request->get('status');
+        $minPrice = \Yii::$app->request->get('minPrice');
+        $maxPrice = \Yii::$app->request->get('maxPrice');
+        $keyword = \Yii::$app->request->get('keyword');
+        $status = \Yii::$app->request->get('status');
 
         //加条件
 
         //最小值
-        if ($minPrice){
+        if ($minPrice) {
             $query->andWhere("shop_price>={$minPrice}");
         }
         //最大值
-        if ($maxPrice){
-            $query->andWhere(['<=','shop_price',$maxPrice]);
+        if ($maxPrice) {
+            $query->andWhere(['<=', 'shop_price', $maxPrice]);
         }
         //商品名称和货号
-        if ($keyword!==""){
+        if ($keyword !== "") {
 
             $query->andWhere("name like '%{$keyword}%' or sn like '%{$keyword}%'");
 
         }
-       //判断status 字符串  所有的Http请求的参数都字符串，判断必需用3等加字符
-        if ($status==="0" || $status==="1"){
+        //判断status 字符串  所有的Http请求的参数都字符串，判断必需用3等加字符
+        if ($status === "0" || $status === "1") {
 
 
-            $query->andWhere(['status'=>$status]);
+            $query->andWhere(['status' => $status]);
         }
-
 
 
 // 得到文章的总数（但是还没有从数据库取数据）
@@ -82,7 +85,7 @@ class GoodsController extends \yii\web\Controller
             ->limit($pagination->limit)
             ->all();
 
-        return $this->render('index', compact('pagination','goods'));
+        return $this->render('index', compact('pagination', 'goods'));
     }
 
     /**
@@ -244,13 +247,13 @@ class GoodsController extends \yii\web\Controller
                 //保存数据
                 if ($good->save()) {
                     //商品内容
-                   // $intro->goods_id = $good->id;
+                    // $intro->goods_id = $good->id;
                     $intro->save();
 
 
                     //多图操作
                     //操作之前一定要先删除当前商品所对应的所有图片
-                    GoodsGallery::deleteAll(['goods_id'=>$id]);
+                    GoodsGallery::deleteAll(['goods_id' => $id]);
                     //循环images
                     foreach ($good->images as $image) {
 
@@ -281,12 +284,11 @@ class GoodsController extends \yii\web\Controller
 
         }
 //从数据库中找出当前商品对应的所有图片
-        $images=GoodsGallery::find()->where(['goods_id'=>$id])->asArray()->all();
-
+        $images = GoodsGallery::find()->where(['goods_id' => $id])->asArray()->all();
 
 
         //把二维数组转成指定字段的一维数组
-        $images=array_column($images,'path');
+        $images = array_column($images, 'path');
         //var_dump($images);exit;
         //给images赋值
         $good->images = $images;
@@ -294,7 +296,8 @@ class GoodsController extends \yii\web\Controller
         return $this->render('add', compact('good', 'cates', 'brands', 'intro'));
     }
 
-    public function actionDel($id){
+    public function actionDel($id)
+    {
 
         //删除商品表
         //删除内容表
