@@ -3,6 +3,9 @@
 namespace frontend\controllers;
 
 use backend\models\Goods;
+use frontend\components\ShopCart;
+use frontend\models\Cart;
+use yii\helpers\ArrayHelper;
 use yii\helpers\Json;
 use yii\web\Cookie;
 
@@ -39,7 +42,13 @@ class GoodsController extends \yii\web\Controller
     {
 
         if (\Yii::$app->user->isGuest) {
-            //未登录存COokie
+
+          /*  $cart=new ShopCart();
+            $cart->add($id,$amount)->save();*/
+            (new ShopCart())->add($id,$amount)->save();
+
+           // $cart->save();
+          /*  //未登录存COokie
             //得到COokie对象
             $getCookie = \Yii::$app->request->cookies;
             //得到原来购物车数据
@@ -65,17 +74,44 @@ class GoodsController extends \yii\web\Controller
             //2.创建一个COokie对象
             $cookie = new Cookie([
                 'name' => 'cart',
-                'value' => $cart
+                'value' => $cart,
+                'expire' => time()+3600*24*30*12
             ]);
             //2.通过设置COokie对象来添加一个COokie
-            $setCookie->add($cookie);
+            $setCookie->add($cookie);*/
 
-            return $this->redirect(['cart-list']);
+
 
 
         } else {
             //已登录 存数据库
+
+          //当前用户
+            $userId=\Yii::$app->user->id;
+            //判断当前用户当前商品有没有存在
+            $cart=Cart::findOne(['goods_id'=>$id,'user_id'=>$userId]);
+            //判断
+            if ($cart){
+                //+ 修改操作
+                $cart->num+=$amount;
+               // $cart->save();
+
+
+            }else{
+                //创建对象
+                $cart=new Cart();
+                //赋值
+                $cart->goods_id=$id;
+                $cart->num=$amount;
+                $cart->user_id=$userId;
+            }
+            //保存
+            $cart->save();
+
+
         }
+
+        return $this->redirect(['cart-list']);
 
         //var_dump($id,$amount);
     }
@@ -101,6 +137,27 @@ class GoodsController extends \yii\web\Controller
 
         } else {
             //已登录 数据库
+
+            //从cookie中取出购物车数据
+          //  $cart = \Yii::$app->request->cookies->getValue('cart', []);
+            $cart=Cart::find()->where(['user_id'=>\Yii::$app->user->id])->all();
+
+            //把二维数组提取成一维数组 【‘商品Id’=》商品数量,...】
+            $cart=ArrayHelper::map($cart,'goods_id','num');
+
+          //  var_dump($cart);exit;
+
+            //取出$cart中的所有key值
+            //  var_dump(array_keys($cart));exit;
+            $goodIds = array_keys($cart);
+
+            //取购物车的所有商品
+            $goods = Goods::find()->where(['in', 'id', $goodIds])->all();
+
+
+            //  var_dump($goods);exit;
+
+
         }
         return $this->render('list', compact('goods', 'cart'));
     }
@@ -109,7 +166,9 @@ class GoodsController extends \yii\web\Controller
     {
 
         if (\Yii::$app->user->isGuest) {
-            //1`.从COokie取出购物车数据
+
+            (new ShopCart())->update($id,$amount)->save();
+           /* //1`.从COokie取出购物车数据
             $cart = \Yii::$app->request->cookies->getValue('cart', []); //[1=>6,5=>5]
             //2 修改对应的数据
             $cart[$id] = $amount;
@@ -123,7 +182,7 @@ class GoodsController extends \yii\web\Controller
                 'value' => $cart
             ]);
             //2.通过设置COokie对象来添加一个COokie
-            $setCookie->add($cookie);
+            $setCookie->add($cookie);*/
         }
 
 
@@ -136,7 +195,8 @@ class GoodsController extends \yii\web\Controller
     public function actionDelCart($id)
     {
         if (\Yii::$app->user->isGuest) {
-            //1`.从COokie取出购物车数据
+            (new ShopCart())->del($id)->save();
+           /* //1`.从COokie取出购物车数据
             $cart = \Yii::$app->request->cookies->getValue('cart', []); //[1=>6,5=>5]
             //2 删除对应的数据
             unset($cart[$id]);
@@ -150,7 +210,7 @@ class GoodsController extends \yii\web\Controller
                 'value' => $cart
             ]);
             //2.通过设置COokie对象来添加一个COokie
-            $setCookie->add($cookie);
+            $setCookie->add($cookie);*/
 
             return Json::encode([
                 'status'=>1,

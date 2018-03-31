@@ -48,7 +48,7 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
             [['username', 'password','rePassword','mobile', 'email'], 'required'],
             [['mobile'],'match','pattern'=>'/(13|14|15|17|18|19)[0-9]{9}/','message'=>'请输入正确的手机','on' => 'register'],
         ['rePassword','compare','compareAttribute' => 'password','on' => 'register'],
-            [['checkCode'],'captcha','captchaAction' => 'user/code'],//验证码
+          //  [['checkCode'],'captcha','captchaAction' => 'user/code'],//验证码
             [['captcha'],'validateCaptcha','on'=>'register'],//自定义规则
             [['rememberMe'],'safe','on' => self::SCENARIO_LOGIN]
 

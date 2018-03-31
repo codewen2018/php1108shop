@@ -2,6 +2,8 @@
 
 namespace frontend\controllers;
 
+use frontend\components\ShopCart;
+use frontend\models\Cart;
 use frontend\models\User;
 use Mrgoon\AliSms\AliSms;
 use yii\helpers\Json;
@@ -127,6 +129,46 @@ class UserController extends \yii\web\Controller
                 if ($user && \Yii::$app->security->validatePassword($model->password,$user->password_hash)){
                           //登录成功
                     \Yii::$app->user->login($user,$model->rememberMe?3600*24*7:0);
+
+                    //同步到数据库
+                    (new ShopCart())->dbSyn()->flush()->save();
+                  /*  //同步本地cookie中购物车数据到数据库中去
+
+                    //1. 取出cookie中的数据  [1=>2,5=>1]
+                    $cart=(new ShopCart())->get();
+
+                  //  var_dump($cart);exit;
+                    //2.把数据同步到数据库中
+                    //当前用户
+                    $userId=\Yii::$app->user->id;
+
+                    foreach ($cart as $goodId=>$num){
+
+                        //判断当前用户当前商品有没有存在
+                        $cartDb=Cart::findOne(['goods_id'=>$goodId,'user_id'=>$userId]);
+                        //判断
+                        if ($cartDb){
+                            //+ 修改操作
+                            $cartDb->num+=$num;
+                            // $cart->save();
+
+
+                        }else{
+                            //创建对象
+                            $cartDb=new Cart();
+                            //赋值
+                            $cartDb->goods_id=$goodId;
+                            $cartDb->num=$num;
+                            $cartDb->user_id=$userId;
+                        }
+                        //保存
+                        $cartDb->save();
+
+                    }*/
+
+                    //3.清空本地cookie中的数据
+
+
                     $result= [
                         'status'=>1,
                         'msg'=>'登录成功',
@@ -211,6 +253,14 @@ class UserController extends \yii\web\Controller
 
 
 
+
+    }
+
+    public function actionLogout(){
+
+        if (\Yii::$app->user->logout()) {
+            return $this->redirect(['login']);
+        }
 
     }
 

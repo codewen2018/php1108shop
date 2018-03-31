@@ -132,6 +132,19 @@
 <script type="text/javascript" src="/js/jquery-1.8.3.min.js"></script>
 <script type="text/javascript" src="/layer/layer.js"></script>
 <script>
+    function getQueryVariable(variable)
+    {
+        var query = window.location.search.substring(1);
+        var vars = query.split("&");
+        for (var i=0;i<vars.length;i++) {
+            var pair = vars[i].split("=");
+            if(pair[0] == variable){return pair[1];}
+        }
+        return(false);
+    }
+    //$_GET['url']
+   // alert(getQueryVariable('url'));
+   // alert(decodeURIComponent(getQueryVariable('url')));
 $(function () {
    //1.登录的点击事件
     $(".login_btn").click(function () {
@@ -142,7 +155,14 @@ $(function () {
 
                 alert(data.msg);
                 //成功
-                window.location.href="/index/index"
+                var url=getQueryVariable('url');
+                if(url===false){
+                    window.location.href="/index/index"
+                }else {
+
+                    window.location.href=decodeURIComponent(url)
+                }
+
 
 
             }else {
