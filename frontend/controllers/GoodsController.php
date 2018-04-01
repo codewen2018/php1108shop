@@ -41,6 +41,11 @@ class GoodsController extends \yii\web\Controller
     public function actionAddCart($id, $amount)
     {
 
+        //判断当肖商品ID是不是存在
+        if (Goods::findOne($id)===null) {
+            return $this->redirect(['index/index']);
+        }
+
         if (\Yii::$app->user->isGuest) {
 
           /*  $cart=new ShopCart();
