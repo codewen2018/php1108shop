@@ -19,6 +19,7 @@ use yii\helpers\Url;
 
 class OrderController extends \yii\web\Controller
 {
+    public $enableCsrfValidation=false;
     public function actionIndex()
     {
         //判断有没有登录
@@ -258,7 +259,7 @@ class OrderController extends \yii\web\Controller
             'out_trade_no' => $order->trade_no,//订单编号
             'total_fee' => $order->price * 100, // 单位：分
             'notify_url' => Url::to(['order/notify'], true), //
-            //http://www.shop.com/order/notify
+            //http://www2.07feiwen.com/order/notify
             // 支付结果通知网址，如果不设置则会使用配置里的默认地址 异步通知地址
             // 'openid'           => '当前用户的 openid', // trade_type=JSAPI，此参数必传，用户在商户appid下的唯一标识，
             // ...
