@@ -114,4 +114,17 @@ class Day15Controller extends Controller
 
     }
 
+    /**
+     * 发邮箱
+     */
+    public function actionEmail()
+    {
+        \Yii::$app->mailer->compose()
+            ->setFrom('liu3chao@163.com')
+            ->setTo('1285143051@qq.com')
+            ->setSubject('PHP 1108大神班马要要毕业了')
+          //  ->setTextBody('Plain text content')
+            ->setHtmlBody('<b>祝大家学来有成</b>')
+            ->send();
+    }
 }
