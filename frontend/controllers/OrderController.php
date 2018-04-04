@@ -19,7 +19,8 @@ use yii\helpers\Url;
 
 class OrderController extends \yii\web\Controller
 {
-    public $enableCsrfValidation=false;
+    public $enableCsrfValidation = false;
+
     public function actionIndex()
     {
         //判断有没有登录
@@ -299,26 +300,26 @@ class OrderController extends \yii\web\Controller
         //  var_dump($options);exit;
         //创建操作微信的对象
         $app = new Application($options);
-        $response = $app->payment->handleNotify(function($notify, $successful){
+        $response = $app->payment->handleNotify(function ($notify, $successful) {
             // 使用通知里的 "微信支付订单号" 或者 "商户订单号" 去自己的数据库找到订单
-           // $order = 查询订单($notify->out_trade_no);
+            // $order = 查询订单($notify->out_trade_no);
 
             //通过$notify->out_trade_no订单编号把订单找出来
-            $order=Order::findOne(['trade_no'=>$notify->out_trade_no]);
+            $order = Order::findOne(['trade_no' => $notify->out_trade_no]);
             if (!$order) { // 如果订单不存在
                 return 'Order not exist.'; // 告诉微信，我已经处理完了，订单没找到，别再通知我了
             }
 
             // 如果订单存在
             // 检查订单是否已经更新过支付状态
-            if ($order->status!=1) { // 假设订单字段“支付时间”不为空代表已经支付
+            if ($order->status != 1) { // 假设订单字段“支付时间”不为空代表已经支付
                 return true; // 已经支付成功了就不再更新了
             }
 
             // 用户是否支付成功
             if ($successful) {
                 // 不是已经支付状态则修改为已经支付状态
-              //  $order->paid_at = time(); // 更新支付时间为当前时间
+                //  $order->paid_at = time(); // 更新支付时间为当前时间
                 $order->status = 2;//1 等待支付 2 已支付
             }
 
@@ -330,4 +331,58 @@ class OrderController extends \yii\web\Controller
         return $response;
     }
 
+
+    /**
+     * 得到当前订单状态
+     * @param $id
+     * @return string
+     */
+    public function actionStatus($id)
+    {
+        $order = Order::findOne($id);
+
+        return Json::encode($order);
+    }
+
+    public function actionClear()
+    {
+        //1 找出超时未支付 time()-create_time>15*60  status=1
+        //time()-create_time>15*60 ===>>>  time()-15*60>create_time
+        //   create_time<time()-900
+        $orders=Order::find()->where(['status'=>1])->andWhere(['<','create_time',time()-900])->asArray()->all();
+
+        //1.1拿到所有$orders的ID
+
+        $orderIds=array_column($orders,'id');
+      var_dump($orderIds);
+
+        //2 给所有符合条件订单的status=0 已取消
+
+        Order::updateAll(['status'=>0],['in','id',$orderIds]);
+
+        //3 得把订单对应的商品库存还原
+        //循环订单
+        foreach ($orders as $order){
+            //每个订单对应的商品详情
+            $orderDetails=OrderDetail::find()->where(['order_id'=>$order['id']])->all();
+            //循环商品详情
+            foreach ($orderDetails as $orderDetail){
+
+
+                //还原库存
+              /*  $good=Goods::findOne($orderDetail->goods_id);
+                $good->stock+=$orderDetail->amount;
+                $good->save();*/
+              Goods::updateAllCounters(['stock'=>$orderDetail->amount],['id'=>$orderDetail->goods_id]);
+
+            }
+
+
+
+
+
+        }
+
+
+    }
 }

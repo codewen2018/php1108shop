@@ -88,33 +88,42 @@
     <div style="clear:both;"></div>
 
     <!-- 导航条部分 start -->
+
+    <?php
+    ob_start();//开启缓存
+    ?>
+
     <div class="nav w1210 bc mt10">
         <!--  商品分类部分 start-->
-        <div class="category fl <?=Yii::$app->controller->id."/".Yii::$app->controller->action->id==="index/index"?"":"cat1"?>"> <!-- 非首页，需要添加cat1类 -->
+        <div class="category fl <?= Yii::$app->controller->id . "/" . Yii::$app->controller->action->id === "index/index" ? "" : "cat1" ?>">
+            <!-- 非首页，需要添加cat1类 -->
             <div class="cat_hd">  <!-- 注意，首页在此div上只需要添加cat_hd类，非首页，默认收缩分类时添加上off类，鼠标滑过时展开菜单则将off类换成on类 -->
                 <h2>全部商品分类</h2>
                 <em></em>
             </div>
 
             <!--非首页加none-->
-            <div class="cat_bd <?=Yii::$app->controller->id."/".Yii::$app->controller->action->id==="index/index"?"":"none"?>">
+            <div class="cat_bd <?= Yii::$app->controller->id . "/" . Yii::$app->controller->action->id === "index/index" ? "" : "none" ?>">
 
                 <!--找出所有一级分类再循环-->
                 <?php foreach (\backend\models\Category::find()->where(['parent_id' => 0])->all() as $k1 => $v1): ?>
 
                     <div class="cat <?= $k1 == 0 ? "item1" : "" ?>">
-                        <h3><a href="<?=\yii\helpers\Url::to(['list','id'=>$v1->id])?>"><?= $v1->name ?></a> <b></b></h3>
+                        <h3><a href="<?= \yii\helpers\Url::to(['list', 'id' => $v1->id]) ?>"><?= $v1->name ?></a>
+                            <b></b></h3>
                         <div class="cat_detail">
 
                             <!--通过当前分类的ID找出二级分类-->
-                            <?php foreach (\backend\models\Category::find()->where(['parent_id'=>$v1->id])->all() as $k2=>$v2): ?>
+                            <?php foreach (\backend\models\Category::find()->where(['parent_id' => $v1->id])->all() as $k2 => $v2): ?>
 
-                                <dl class="<?=$k2==0?"dl_1st":""?>">
-                                    <dt><a href="<?=\yii\helpers\Url::to(['list','id'=>$v2->id])?>"><?=$v2->name?></a></dt>
+                                <dl class="<?= $k2 == 0 ? "dl_1st" : "" ?>">
+                                    <dt>
+                                        <a href="<?= \yii\helpers\Url::to(['list', 'id' => $v2->id]) ?>"><?= $v2->name ?></a>
+                                    </dt>
                                     <dd>
                                         <!--通过二级分类的ID找出三级分类-->
-                                        <?php foreach (\backend\models\Category::find()->where(['parent_id'=>$v2->id])->all() as $k3=>$v3): ?>
-                                        <a href="<?=\yii\helpers\Url::to(['list','id'=>$v3->id])?>"><?=$v3->name?></a>
+                                        <?php foreach (\backend\models\Category::find()->where(['parent_id' => $v2->id])->all() as $k3 => $v3): ?>
+                                            <a href="<?= \yii\helpers\Url::to(['list', 'id' => $v3->id]) ?>"><?= $v3->name ?></a>
                                         <?php endforeach; ?>
                                     </dd>
                                 </dl>
@@ -146,6 +155,27 @@
             <div class="right_corner fl"></div>
         </div>
     </div>
+
+
+    <?php
+
+    $html = ob_get_clean();
+    //判断是首页还其它页
+    $name = Yii::$app->controller->id . "/" . Yii::$app->controller->action->id == "index/index" ? "index" : "other";
+    //判断缓存中有没有
+    if (Yii::$app->cache->get($name)) {
+        echo Yii::$app->cache->get($name);
+    } else {
+        //存到缓存
+        Yii::$app->cache->set($name, $html);
+        //输出内容
+        echo $html;
+    }
+
+
+
+
+    ?>
     <!-- 导航条部分 end -->
 </div>
 <!-- 头部 end-->

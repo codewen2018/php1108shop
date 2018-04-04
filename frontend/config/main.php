@@ -23,6 +23,7 @@ return [
             'identityCookie' => ['name' => '_identity-frontend', 'httpOnly' => true],
         ],
         'session' => [
+           // 'class'=>\yii\redis\Session::className(),
             // this is the name of the session cookie used for login on the frontend
             'name' => 'advanced-frontend',
         ],
@@ -44,6 +45,14 @@ return [
             'showScriptName' => false,
             'rules' => [
             ],
+        ],
+
+        //redis
+       'redis' => [
+            'class' => 'yii\redis\Connection',
+            'hostname' => '127.0.0.1',
+            'port' => 6379,
+            'database' => 0,
         ],
 
     ],

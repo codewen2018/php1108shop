@@ -208,6 +208,22 @@ class UserController extends \yii\web\Controller
 
     public function actionSendSms($mobile)
     {
+        //1.一个手机号一分钟之内只能发一次  每日最多发5次 数据库
+        /*
+         *   id    tel       day    count    send_time      code
+         *   1     138    20180404    1          10:20      1111
+         *
+         * 如果 当前手机号当天没有数据就执行新增 count=1  否则 执行修改 只需给count+1
+         *
+         * time()-send_time()<60 返回 提示还没有一分钟，不能发送
+         *
+         *
+         * 1号验证1111 2号1111    1111 1111  5分钟之内
+         */
+
+
+
+
         //1. 生成验证码 13899998888=>111111
         $code=rand(100000,999999);
         //2. 把这个验证码发送给$mobile
